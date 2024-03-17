@@ -10,5 +10,5 @@ export class CreateArtistDto {
   @IsBoolean()
   @IsNotEmpty()
   @ApiProperty()
-  grammary: boolean;
+  grammy: boolean;
 }

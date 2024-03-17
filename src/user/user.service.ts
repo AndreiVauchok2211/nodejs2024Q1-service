@@ -1,26 +1,76 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
+import { DataServices, users } from 'db/db';
+import { createID } from 'src/services/createID';
+
+const userWithoutPassword = (user: User) => {
+  const userClone = Object.assign({}, user);
+  delete userClone.password;
+  return userClone;
+};
 
 @Injectable()
 export class UserService {
+  constructor(private readonly DBServices: DataServices) {}
+
+  private Users: User[] = this.DBServices.users;
+
   create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+    const newUser: User = {
+      id: createID(),
+      ...createUserDto,
+      version: 1,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    };
+    this.Users.push(newUser);
+    return userWithoutPassword(newUser);
   }
 
   findAll() {
-    return `This action returns all user`;
+    const allUsers = this.Users.map((user) => {
+      return userWithoutPassword(user);
+    });
+    return allUsers;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(id: string) {
+    const user = this.Users.find((user) => user.id === id);
+    if (user) {
+      return userWithoutPassword(user);
+    }
+    return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(id: string, updateUserDto: UpdateUserDto) {
+    const user = this.Users.find((user) => user.id === id);
+    if (user) {
+      if (user.password !== updateUserDto.oldPassword) {
+        throw new ForbiddenException(
+          `Incorrectly entered old password for user`,
+        );
+      }
+      user.password = updateUserDto.newPassword;
+      user.version = user.version++;
+      user.updatedAt = Date.now();
+      return userWithoutPassword(user);
+    }
+    return user;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(id: string) {
+    const userIndex = this.Users.findIndex((user) => user.id === id);
+    if (userIndex == -1) {
+      throw new NotFoundException({
+        message: `User not found`,
+      });
+    }
+    this.Users.splice(userIndex, 1);
   }
 }

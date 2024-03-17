@@ -1,198 +1,210 @@
 openapi: 3.0.0
-info:
-  title: Home Library Service
-  description: Home music library service
-  version: 1.0.0
+# info:
+#   title: Home Library Service
+#   description: Home music library service
+#   version: 1.0.0
 
-servers:
-  - url: /api
+# servers:
+#   - url: /api
 
-components:
-  schemas:
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        login:
-          type: string
-          example: 'TestUser'
-        version:
-          type: number
-          example: 1
-        createAt:
-          type: number
-          example: 1655000000
-        updateAt:
-          type: number
-          example: 1655000000
-      required:
-        - id
-        - login
-    Artist:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-          example: 'Freddie Mercury'
-        grammy:
-          type: boolean
-          example: false
-      required:
-        - id
-        - name
-    Album:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-          example: 'Innuendo'
-        year:
-          type: integer
-          example: 1991
-        artistId:
-          type: string
-          format: uuid
-          nullable: true
-      required:
-        - id
-        - name
-    Track:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-          example: The Show Must Go On
-        artistId:
-          type: string
-          format: uuid
-          nullable: true
-        albumId:
-          type: string
-          format: uuid
-          nullable: true
-        duration:
-          type: integer
-          description: In seconds
-          example: 262
-      required:
-        - id
-        - name
-        - duration
-    Favorites:
-      type: object
-      properties:
-        artists:
-          type: array
-          items:
-            $ref: '#/components/schemas/Artist'
-        albums:
-          type: array
-          items:
-            $ref: '#/components/schemas/Album'
-        tracks:
-          type: array
-          items:
-            $ref: '#/components/schemas/Track'
-  responses:
-    UnauthorizedError:
-      description: Access token is missing or invalid
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+# components:
+#   schemas:
+#     User:
+#       type: object
+#       properties:
+#         id:
+#           type: string
+#           format: uuid
+#         login:
+#           type: string
+#           example: 'TestUser'
+#         version:
+#           type: number
+#           example: 1
+#         createAt:
+#           type: number
+#           example: 1655000000
+#         updateAt:
+#           type: number
+#           example: 1655000000
+#       required:
+#         - id
+#         - login
+#     Artist:
+#       type: object
+#       properties:
+#         id:
+#           type: string
+#           format: uuid
+#         name:
+#           type: string
+#           example: 'Freddie Mercury'
+#         grammy:
+#           type: boolean
+#           example: false
+#       required:
+#         - id
+#         - name
+#     Album:
+#       type: object
+#       properties:
+#         id:
+#           type: string
+#           format: uuid
+#         name:
+#           type: string
+#           example: 'Innuendo'
+#         year:
+#           type: integer
+#           example: 1991
+#         artistId:
+#           type: string
+#           format: uuid
+#           nullable: true
+#       required:
+#         - id
+#         - name
+#     Track:
+#       type: object
+#       properties:
+#         id:
+#           type: string
+#           format: uuid
+#         name:
+#           type: string
+#           example: The Show Must Go On
+#         artistId:
+#           type: string
+#           format: uuid
+#           nullable: true
+#         albumId:
+#           type: string
+#           format: uuid
+#           nullable: true
+#         duration:
+#           type: integer
+#           description: In seconds
+#           example: 262
+#       required:
+#         - id
+#         - name
+#         - duration
+#     Favorites:
+#       type: object
+#       properties:
+#         artists:
+#           type: array
+#           items:
+#             $ref: '#/components/schemas/Artist'
+#         albums:
+#           type: array
+#           items:
+#             $ref: '#/components/schemas/Album'
+#         tracks:
+#           type: array
+#           items:
+#             $ref: '#/components/schemas/Track'
+#   responses:
+#     UnauthorizedError:
+#       description: Access token is missing or invalid
+#   securitySchemes:
+#     bearerAuth:
+#       type: http
+#       scheme: bearer
+#       bearerFormat: JWT
 
-security:
-  - bearerAuth: []
+# security:
+#   - bearerAuth: []
 
+# paths:
+# /login:
+#   post:
+#     tags:
+#       - Login
+#     security: []
+#     summary: Login
+#     description: Logins a user and returns a JWT-token
+#     requestBody:
+#       required: true
+#       content:
+#         application/json:
+#           schema:
+#             type: object
+#             title: example
+#             properties:
+#               login:
+#                 type: string
+#                 description: Username
+#               password:
+#                 type: string
+#                 description: Password
+#             required:
+#               - user
+#               - login
+#     responses:
+#       200:
+#         description: Successful login.
+#         content:
+#           application/json:
+#             schema:
+#               type: object
+#               properties:
+#                 token:
+#                   type: string
+#               description: JWT Token
+#       403:
+#         description: Incorrect login or password
+# /signup:
+#   post:
+#     tags:
+#       - Signup
+#     security: [ ]
+#     summary: Signup
+#     description: Signup a user
+#     requestBody:
+#       required: true
+#       content:
+#         application/json:
+#           schema:
+#             type: object
+#             title: example
+#             properties:
+#               login:
+#                 type: string
+#                 minLength: 3
+#                 maxLength: 255
+#                 description: Username
+#               password:
+#                 type: string
+#                 format: password
+#                 pattern: ^[a-zA-Z0-9]{3,30}
+#                 description: Password
+#             required:
+#               - login
+#               - password
+#     responses:
+#       204:
+#         description: Successful signup
+#       400:
+#         description: Bad request
+#       409:
+#         description: Conflict. Login already exists
 paths:
-  /login:
-    post:
-      tags:
-        - Login
-      security: []
-      summary: Login
-      description: Logins a user and returns a JWT-token
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              title: example
-              properties:
-                login:
-                  type: string
-                  description: Username
-                password:
-                  type: string
-                  description: Password
-              required:
-                - user
-                - login
+  /:
+    get:
+      operationId: AppConttroller_getHello
+      summary: entry point of index
+      parameters: []
       responses:
         200:
-          description: Successful login.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  token:
-                    type: string
-                description: JWT Token
-        403:
-          description: Incorrect login or password
-  /signup:
-    post:
-      tags:
-        - Signup
-      security: [ ]
-      summary: Signup
-      description: Signup a user
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              title: example
-              properties:
-                login:
-                  type: string
-                  minLength: 3
-                  maxLength: 255
-                  description: Username
-                password:
-                  type: string
-                  format: password
-                  pattern: ^[a-zA-Z0-9]{3,30}
-                  description: Password
-              required:
-                - login
-                - password
-      responses:
-        204:
-          description: Successful signup
-        400:
-          description: Bad request
-        409:
-          description: Conflict. Login already exists
-  /users:
+  description: hello message
+  tags:
+    - Index
+
+  /user:
     get:
       tags:
-        - Users
+        - User
       summary: Get all users
       description: Gets all users
       responses:
@@ -208,7 +220,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
     post:
       tags:
-        - Users
+        - User
       summary: Create user
       description: Creates a new user
       requestBody:
@@ -239,7 +251,7 @@ paths:
           description: Bad request. body does not contain required fields
         401:
           $ref: '#/components/responses/UnauthorizedError'
-  /users/{userId}:
+  /user/{id}:
     parameters:
       - name: userId
         in: path
@@ -248,7 +260,7 @@ paths:
           type: string
     get:
       tags:
-        - Users
+        - User
       summary: Get single user by id
       description: Get single user by id
       responses:
@@ -267,7 +279,7 @@ paths:
 
     put:
       tags:
-        - Users
+        - User
       summary: Update a user's password
       description: Updates a user's password by ID
       requestBody:
@@ -322,7 +334,7 @@ paths:
 
     delete:
       tags:
-        - Users
+        - User
       summary: Delete user
       description: Deletes user by ID.
       responses:

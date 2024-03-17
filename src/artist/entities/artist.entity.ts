@@ -12,5 +12,5 @@ export class Artist {
   name: string;
 
   @ApiProperty()
-  grammary: boolean;
+  grammy: boolean;
 }

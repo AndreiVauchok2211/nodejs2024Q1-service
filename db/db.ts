@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 import {
   IAlbum,
   IArtist,
@@ -19,3 +20,22 @@ export const favorites: IFavorites = {
   albums: [],
   tracks: [],
 };
+
+@Injectable()
+export class DataServices {
+  get users() {
+    return users;
+  }
+  get artists() {
+    return artists;
+  }
+  get albums() {
+    return albums;
+  }
+  get tracks() {
+    return tracks;
+  }
+  get favorites() {
+    return favorites;
+  }
+}
