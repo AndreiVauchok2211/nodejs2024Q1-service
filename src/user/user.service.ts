@@ -9,6 +9,7 @@ import { User } from './entities/user.entity';
 import { DataServices, users } from 'db/db';
 import { createID } from 'src/services/createID';
 import { userWithoutPassword } from 'src/services/userWithoutPassw';
+import { createTimestamp } from 'src/services/createTimestamp';
 
 @Injectable()
 export class UserService {
@@ -21,8 +22,8 @@ export class UserService {
       id: createID(),
       ...createUserDto,
       version: 1,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
+      createdAt: createTimestamp,
+      updatedAt: createTimestamp,
     };
     this.Users.push(newUser);
     return userWithoutPassword(newUser);
@@ -53,7 +54,7 @@ export class UserService {
       }
       user.password = updateUserDto.newPassword;
       user.version += 1;
-      user.updatedAt = Date.now();
+      user.updatedAt = createTimestamp;
       return userWithoutPassword(user);
     }
     return user;
