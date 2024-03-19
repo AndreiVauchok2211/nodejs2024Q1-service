@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   NotFoundException,
   HttpCode,
+  Put,
 } from '@nestjs/common';
 import { ArtistService } from './artist.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
@@ -90,7 +91,7 @@ export class ArtistController {
     return artist;
   }
 
-  @Patch(':id')
+  @Put(':id')
   @ApiOperation({
     summary: 'artist update',
   })

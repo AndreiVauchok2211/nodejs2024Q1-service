@@ -14,8 +14,6 @@ export class ArtistService {
     const newArtist: Artist = {
       id: createID(),
       ...createArtistDto,
-      name: '',
-      grammy: false,
     };
     this.Artists.push(newArtist);
     return newArtist;

@@ -8,12 +8,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { DataServices, users } from 'db/db';
 import { createID } from 'src/services/createID';
-
-const userWithoutPassword = (user: User) => {
-  const userClone = Object.assign({}, user);
-  delete userClone.password;
-  return userClone;
-};
+import { userWithoutPassword } from 'src/services/userWithoutPassw';
 
 @Injectable()
 export class UserService {
@@ -57,7 +52,7 @@ export class UserService {
         );
       }
       user.password = updateUserDto.newPassword;
-      user.version = user.version++;
+      user.version += 1;
       user.updatedAt = Date.now();
       return userWithoutPassword(user);
     }

@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   NotFoundException,
   HttpCode,
+  Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -23,13 +24,16 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiParam,
+  ApiTags,
 } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 
 @Controller('user')
+@ApiTags('User')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Post()
   @ApiBody({
     type: CreateUserDto,
     description: 'new user  data',
@@ -41,11 +45,11 @@ export class UserController {
   @ApiBadRequestResponse({
     description: 'Request body does not contain required fields',
   })
-  @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
 
+  @Get()
   @ApiOperation({
     summary: 'get all users',
   })
@@ -53,12 +57,14 @@ export class UserController {
     description: 'Users successfully received',
     type: [User],
   })
-  @Get()
   findAll() {
     return this.userService.findAll();
   }
 
   @Get(':id')
+  @ApiOperation({
+    summary: 'get user by id',
+  })
   @ApiParam({
     name: 'id',
     required: true,
@@ -66,7 +72,7 @@ export class UserController {
     type: 'string',
   })
   @ApiOkResponse({
-    description: 'User successfully received',
+    description: 'User received',
     type: User,
   })
   @ApiBadRequestResponse({
@@ -83,7 +89,7 @@ export class UserController {
     return user;
   }
 
-  @Patch(':id')
+  @Put(':id')
   @ApiOperation({
     summary: 'update user password',
   })
@@ -98,7 +104,7 @@ export class UserController {
     description: 'update user data',
   })
   @ApiOkResponse({
-    description: 'user successfully updated',
+    description: 'user updated',
     type: User,
   })
   @ApiBadRequestResponse({
