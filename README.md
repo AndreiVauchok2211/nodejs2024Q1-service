@@ -1,5 +1,14 @@
 # Home Library Service
 
+## Steps to get checked:
+
+- Use **20 LTS** version of Node.js
+- Clone repository and checkout to the **develop** branch
+- Install dependencies: **npm install**
+- Create .env file (based on .env.example): ./.env
+- Start server: **npm run start**  
+- For run tests: **npm run test**
+
 ## Prerequisites
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
